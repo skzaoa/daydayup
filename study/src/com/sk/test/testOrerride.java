@@ -38,6 +38,14 @@ public class testOrerride {
         v2.setId(0);
         System.out.println("v23....................");
         v2.display();//
+        //多态 需要继承、重写、向上转移来完成
+        Vehicle v4 = new Horse(); //子类对象赋值给父类引用  向上转移
+        v4.display(); //向上转移访问对象被子类重写时，访问子类对象
+        //v4.display1(); //向上转移不能访问子类特有函数
+        Horse h4 = (Horse) v4;//指向子类对象的父类引用赋值给子类引用 向下转移
+        h4.display();//向下转移访问对象被子类重写时，访问子类对象
+        h4.display1();//向下转移可以访问子类特有函数
+
     }
 }
 
@@ -65,7 +73,7 @@ class Vehicle{
         System.out.println(getId()+"停止不动");
     }
     public void display() {
-        System.out.println(getId());
+        System.out.println("Vehicle 类 display");
     }
 }
 
@@ -87,6 +95,12 @@ class Horse extends Vehicle{ //extends是继承关键字，java中只有单继�
         System.out.println(this.id); //子类 打印0
     }
 
+    public void display() {
+        System.out.println("Horse 类 display");
+    }
+    public void display1() {
+        System.out.println("Horse 类 display1");
+    }
 
     @Override  //继承父类后，若父类方法不适用于子类，则子类可以重写父类方法，加上@Override 可以校验一个方法到底是不是从父类继承的方法
     public void run(){
