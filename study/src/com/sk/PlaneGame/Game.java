@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 
 /**
  * @author sk
@@ -20,10 +21,19 @@ public class Game extends Frame {
     Plane plane = new Plane(fjImg,250,250);
     Shell[] shells = new Shell[50];
 
+    Explode bao;
+    //Date startTime1 = new Date();
+    Date startTime = new Date();
+    Date endTime;
+    int period;
+    int iCount;
+    int daoJiSHiTime;
+
+    @Override
     public void paint(Graphics g){
         //自动被调用，g相当于一只画笔
-        //Color c = g.getColor();
-        //Font f = g.getFont();
+        Color c = g.getColor();
+        Font f = g.getFont();
         //g.setColor(Color.red);
         //g.drawLine(100,100,100,300);
 
@@ -33,19 +43,59 @@ public class Game extends Frame {
         //fjX++;
         plane.drawSelf(g);
 
+        if (iCount <= Constant.GAME_PREPARTATION_TIME){
+
+            daoJiSHiTime = Constant.GAME_PREPARTATION_TIME-iCount;
+            //endTime = new Date();
+            //System.out.println(".."+(endTime.getTime()-startTime1.getTime())/1000);
+            System.out.println("倒计时"+daoJiSHiTime+"秒");
+            g.setColor(Color.red);
+            g.setFont(new Font("宋体",Font.BOLD,50));
+            g.drawString("倒计时"+daoJiSHiTime+"秒",250-50*5/2,250);
+
+            try {
+                Thread.sleep(1000-40);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (iCount == Constant.GAME_PREPARTATION_TIME) {
+                System.out.println(iCount);
+                iCount++;
+                return;
+            }
+
+            iCount++;
+        }
+
+        startTime = new Date();
+
         //shell.draw(g);
         for(int i=0;i<shells.length;i++) {
             shells[i].draw(g);
+            //System.out.println("撞！！！");
 
             boolean peng = shells[i].getRect().intersects(plane.getRect());
 
-            if(peng) {
+            if(peng && plane.live) {
+            //if(peng) {
                 System.out.println("撞！！！");
                 plane.live = false;
+                if (bao == null) {
+                    bao = new Explode(plane.x,plane.y);
+                    endTime = new Date();
+                    period = (int)(endTime.getTime()-startTime.getTime())/1000;
+                }
+                bao.draw(g);
+            }
+            if (!plane.live) {
+                g.setColor(Color.red);
+                g.setFont(new Font("宋体",Font.BOLD,50));
+                g.drawString("时间："+period+"秒",(int)plane.x,(int)plane.y);
             }
         }
-        //g.setColor(c);
-        //g.setFont(f);
+        g.setColor(c);
+        g.setFont(f);
     }
 
     //反复重画窗口
@@ -55,6 +105,9 @@ public class Game extends Frame {
             while(true){
                 repaint(); //重画
                 //System.out.println("重画");
+                //if (iCount==0)
+                //
+                //iCount++;
                 try {
                     Thread.sleep(40);//1s25次
                 } catch (InterruptedException e) {
@@ -85,7 +138,7 @@ public class Game extends Frame {
         this.setTitle("游戏人生");
         this.setVisible(true);
         this.setSize(Constant.GAME_WIDTH,Constant.GAME_HEIGHT);
-        this.setLocation(300,300);
+        this.setLocation(900,300);
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -94,12 +147,15 @@ public class Game extends Frame {
             }
         });
 
-        new PaintThread().start();//启动重画窗口的线程
-        addKeyListener(new KeyMonitor());//增加键盘监听
-
         for(int i=0;i<shells.length;i++) {
             shells[i] = new Shell();
         }
+
+        new PaintThread().start();//启动重画窗口的线程
+        this.addKeyListener(new KeyMonitor());//增加键盘监听
+        System.out.println("键盘"+daoJiSHiTime+"秒");
+
+
     }
 
     public static void main(String[] agrs) {

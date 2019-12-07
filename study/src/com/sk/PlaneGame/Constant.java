@@ -7,4 +7,5 @@ package com.sk.PlaneGame;
 public class Constant {
     public static final int GAME_WIDTH = 500;
     public static final int GAME_HEIGHT = 500;
+    public static final int GAME_PREPARTATION_TIME = 3;
 }
