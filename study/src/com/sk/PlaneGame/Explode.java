@@ -21,12 +21,13 @@ public class Explode {
     public void draw(Graphics g){
         if(count<=15){
             g.drawImage(imgs[count], (int)x, (int)y, null);
-            count++;
+            //count++;
         }
     }
 
     public Explode(double x,double y){
         this.x = x;
         this.y = y;
+        this.count = 0;
     }
 }
