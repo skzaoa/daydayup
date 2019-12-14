@@ -1,4 +1,4 @@
-package com.sk.TestArrayList;
+package com.sk.Array;
 
 import java.util.ArrayList;
 import java.util.Random;
