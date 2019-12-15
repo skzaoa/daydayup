@@ -1,5 +1,7 @@
 package com.sk.Array;
 
+import java.util.Arrays;
+
 /**
  * @author sk
  * create on  2019/12/14:17:16
@@ -21,22 +23,22 @@ public class TestArrayCopy {
         System.arraycopy(s2,0,s22,0,s2.length);
         //s2 = s22;
         System.arraycopy(s2,4,s2,5,s2.length-4-1);
-        System.out.println(String.class.getDeclaredField("value"));
+        System.out.println(s2[4]);
+        System.out.println(Arrays.toString(s2));
         s2[4] = "cc2";
-
-
+        System.out.println(Arrays.toString(s2));
         System.out.println(s2[4]);
         //System.arraycopy(s21,0,s2,4,1);
-        t1.show(s1,2);
-        t1.show(s2,2);
-
-        System.arraycopy(s1,2,s2,3,3);
-        t1.show(s1,3);
-        t1.show(s2,3);
-
-        System.arraycopy(s1,2,s2,3,3);
-        t1.show(s1,4);
-        t1.show(s2,4);
+//        t1.show(s1,2);
+//        t1.show(s2,2);
+//
+//        System.arraycopy(s1,2,s2,3,3);
+//        t1.show(s1,3);
+//        t1.show(s2,3);
+//
+//        System.arraycopy(s1,2,s2,3,3);
+//        t1.show(s1,4);
+//        t1.show(s2,4);
 
     }
 
