@@ -95,7 +95,7 @@ public class TestMyArrayList<E> {
     //判断索引合法性
     public void judgeRange(int index){
         if(index<0||index>size-1){
-            throw new RuntimeException("索引不合法："+index);
+            throw new RuntimeException("索引不合法："+index+"[0-"+size+"]");
         }
     }
 
