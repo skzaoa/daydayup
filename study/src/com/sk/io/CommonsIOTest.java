@@ -53,6 +53,7 @@ public class CommonsIOTest {
 
         byte[] dates = FileUtils.readFileToByteArray(new File("study\\src\\com\\sk\\io\\CommonsIOTest.java"));
         System.out.println(dates.length);
+        FileUtils.writeByteArrayToFile(new File("../tmp/1.java"),dates);
         System.out.println("------5--------");
 
         List<String> masgs = FileUtils.readLines(new File("study\\src\\com\\sk\\io\\CommonsIOTest.java"),"UTF-8");
