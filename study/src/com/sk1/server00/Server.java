@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.cert.CRL;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -34,16 +35,10 @@ public class Server {
 
             System.out.println("--------返回----------");
             Response response = new Response(client);
-            response.print("<html>");
-            response.print("<head>");
-            response.print("<title>");
-            response.print("服务器响应成功");
-            response.print("</title>");
-            response.print("</head>");
-            response.print("<body>");
-            response.print("终于回来了。。。");
-            response.print("</body>");
-            response.print("</html>");
+
+            Servlet servlet = new LoginServlet();
+            servlet.service(request,response);
+
             response.pushToBrowser(200);
         } catch (IOException e) {
             e.printStackTrace();
