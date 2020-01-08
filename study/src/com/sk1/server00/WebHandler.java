@@ -1,27 +1,18 @@
-package com.sk1.server;
+package com.sk1.server00;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author sk
- * create on  2020/1/5:21:02
+ * create on  2020/1/8:22:10
  */
-
-
-
-class WebHandler extends DefaultHandler {
+public class WebHandler  extends DefaultHandler {
     private List<Entity> entitys;
     private List<Mapping> mappings;
     private Entity entity;
@@ -95,7 +86,7 @@ class WebHandler extends DefaultHandler {
             } else {
                 if (qName.equals("servlet-mapping")) {
                     mappings.add(mapping);
-                    for(Iterator<String> iter = mapping.getPatterns().iterator();iter.hasNext();){
+                    for(Iterator<String> iter = mapping.getPatterns().iterator(); iter.hasNext();){
                         System.out.println(iter.next());
                     }
                     mapping = null;
@@ -116,51 +107,5 @@ class WebHandler extends DefaultHandler {
 
     public List<Mapping> getMappings() {
         return mappings;
-    }
-}
-
-public class ParseWebXML {
-    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        //SAX解析
-        //1、获取解析工厂
-        SAXParserFactory factory=SAXParserFactory.newInstance();
-        //2、从解析工厂获取解析器
-        SAXParser parse =factory.newSAXParser();
-        //3、编写处理器
-        //4、加载文档 Document 注册处理器
-        WebHandler handler=new WebHandler();
-        parse.parse(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("com/sk1/server/web.xml")),handler );
-
-        System.out.println("----entities-------");
-        //获取数据
-        List<Entity> entities = handler.getEntitys();
-        for (Entity entity:entities){
-            System.out.println(entity.getName()+"-->"+entity.getClz());
-        }
-        System.out.println("----mappings-------");
-        List<Mapping> mappings = handler.getMappings();
-        System.out.println(mappings.size());
-        for (Mapping mapping:mappings){
-            System.out.println(mapping.getName()+"-->"+mapping.getPatterns());
-        }
-
-        System.out.println("----context-------");
-        WebContext context = new WebContext(handler.getEntitys(),handler.getMappings());
-
-
-        Class clz = Class.forName(context.getClz("/g"));
-        Servlet servlet = (Servlet)clz.newInstance();
-        System.out.println(servlet);
-        servlet.service();
-
-        clz = Class.forName(context.getClz("/login"));
-        servlet = (Servlet)clz.newInstance();
-        System.out.println(servlet);
-        servlet.service();
-
-        clz = Class.forName(context.getClz("/reg"));
-        servlet = (Servlet)clz.newInstance();
-        System.out.println(servlet);
-        servlet.service();
     }
 }

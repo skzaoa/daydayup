@@ -1,14 +1,9 @@
 package com.sk1.server00;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.cert.CRL;
-import java.util.Arrays;
-import java.util.Date;
+
 
 /**
  * @author sk
@@ -32,14 +27,17 @@ public class Server {
             Socket client = serverSocket.accept();
             System.out.println("一个客户端建立了连接");
             Request request = new Request(client);
-
             System.out.println("--------返回----------");
             Response response = new Response(client);
 
-            Servlet servlet = new LoginServlet();
-            servlet.service(request,response);
-
-            response.pushToBrowser(200);
+            Servlet servlet = MyWeb.getServletFromUrl(request.getUrl());
+            if (servlet != null) {
+                servlet.service(request,response);
+                response.pushToBrowser(200);
+            }else{
+                //错误
+                response.pushToBrowser(404);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

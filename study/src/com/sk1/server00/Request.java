@@ -56,7 +56,7 @@ public class Request {
         //2)、获取HTTP/的位置
         int endIndex = this.requestInfo.indexOf("HTTP/");
         //3)、分割字符串
-        this.url = this.requestInfo.substring(startIndex,endIndex);
+        this.url = this.requestInfo.substring(startIndex,endIndex).trim();
         //4)、获取?的位置
         int queryIndex = this.url.indexOf("?");
         if (queryIndex>=0){
