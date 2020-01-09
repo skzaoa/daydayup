@@ -11,40 +11,37 @@ import java.net.Socket;
  */
 public class Server {
     private ServerSocket serverSocket;
-
+    private boolean isRunning;
     public void start(){
         try {
             serverSocket = new ServerSocket(8888);
+            this.isRunning = true;
             receive();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+    }
 
     }
 
     private void receive(){
-        try {
-            Socket client = serverSocket.accept();
-            System.out.println("一个客户端建立了连接");
-            Request request = new Request(client);
-            System.out.println("--------返回----------");
-            Response response = new Response(client);
-
-            Servlet servlet = MyWeb.getServletFromUrl(request.getUrl());
-            if (servlet != null) {
-                servlet.service(request,response);
-                response.pushToBrowser(200);
-            }else{
-                //错误
-                response.pushToBrowser(404);
+        while (isRunning) {
+            try {
+                Socket client = serverSocket.accept();
+                System.out.println("一个客户端建立了连接");
+                new Thread(new Dispatcher(client)).start();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public void stop(){
-
+        this.isRunning = false;
+        try {
+            this.serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

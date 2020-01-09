@@ -1,6 +1,10 @@
 package com.sk1.server00;
 
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -10,17 +14,7 @@ import java.util.Arrays;
 public class LoginServlet implements Servlet{
 
     @Override
-    public void service(Request request, Response response) {
-        response.print("<html>");
-        response.print("<head>");
-        response.print("<title>");
-        response.print("Servlet启动");
-        response.print("</title>");
-        response.print("</head>");
-        response.print("<body>");
-        response.print("Servlet终于回来了。。。"+ Arrays.toString(request.getParameterValues("fav")));
-        response.print("</body>");
-        response.print("</html>");
-
+    public void service(Request request, Response response) throws IOException {
+        response.print(FileUtils.readFileToString(new File("./study/src/index.html"),"UTF-8"));
     }
 }

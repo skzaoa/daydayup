@@ -23,27 +23,24 @@ public class Request {
     private final String BLANK = " ";
     private final String CRLF = "\r\n";
 
-    public Request(InputStream is) {
+    public Request(InputStream is) throws NullPointerException, IOException {
         paramaterMap = new HashMap<>();
         byte[] datas = new byte[1024*1024];
         int len = 0;
-        try {
-            len = is.read(datas);
+
+        len = is.read(datas);
+        System.out.println(len);
+        if(len>0){
             this.requestInfo = new String(datas,0,len);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            //分解协议
+            parseRequestInfo();
         }
-
-        //分解协议
-        parseRequestInfo();
     }
     public Request(Socket client) throws IOException {
         this(client.getInputStream());
     }
 
-    private void parseRequestInfo(){
+    private void parseRequestInfo() throws NullPointerException{
         System.out.println("------fenjie-------");
         System.out.println(requestInfo);
         System.out.println("----1、获取请求方式：开头第一个/------");
@@ -75,11 +72,13 @@ public class Request {
         }
         System.out.println(this.method);
         System.out.println(this.url);
-        System.out.println(this.queryStr);
+        System.out.println("this.queryStr="+this.queryStr);
         //转成Map fav=1&fav=2&uname=sk&age=18&others=
-        convertMap();
+        if(null != this.queryStr){
+            convertMap();
+        }
     }
-    private void convertMap(){
+    private void convertMap()throws NullPointerException{
         //1、分割字符串
         String[] keyValues = this.queryStr.split("&");
         for(String qureyStr:keyValues){
@@ -105,6 +104,7 @@ public class Request {
         return null;
     }
     public String[] getParameterValues(String key){
+        //parseRequestInfo();
         List<String> values = this.paramaterMap.get(key);
         if(null == values || values.size()<1){
             return null;

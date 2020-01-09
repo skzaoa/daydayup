@@ -31,17 +31,12 @@ public class MyWeb {
         }
     }
 
-    public static Servlet getServletFromUrl(String url){
+    public static Servlet getServletFromUrl(String url) throws NullPointerException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         Class clz = null;
-        try {
-            clz = Class.forName(webContext.getClz("/"+url));
-            Servlet servlet = (Servlet)clz.newInstance();
-            System.out.println(servlet);
-            return servlet;
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
-        return null;
+        clz = Class.forName(webContext.getClz("/"+url));
+        Servlet servlet = (Servlet)clz.newInstance();
+        System.out.println("Class:"+servlet);
+        return servlet;
     }
 
 }
